@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	 <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <!-- Trumbowyg -->
+    <link rel="stylesheet" type="text/css" href="/files/trumbowyg.min.css">
+	<style type="text/css">
+		main{
+			padding-top: 25px;
+		}
+
+		#editPage{
+			display: none;
+		}
+	</style>
+	<title>Management Tool</title>
+</head>
+<body>
+
+	<main id="app">
+
+
+		<div class="container">
+			<h1>Управление страницами</h1>
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" data-toggle="tab" href="#pages" role="tab">Страницы</a>
+				</li>
+			
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+
+				
+				<!-- Pages -->
+				<div class="tab-pane active" id="pages" role="tabpanel">
+						
+					<div v-if="pages.length > 0">
+						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#newPageModal" style="float:right;" v-on:click="showAddModal">
+						  Добавить страницу
+						</button>
+						<table class="table">
+						  <thead>
+						    <tr>
+						      <th scope="col">Заголовок</th>
+						      <th scope="col">URL</th>
+						      <th scope="col">Язык</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr v-for="p in pages">
+						      <td>{{ p.title }}</td>
+						      <td>{{ p.url}}</td>
+						      <td>{{ p.language }}</td>
+						      <td><a href="#!" class="action" v-on:click="showEditModal(p)">Edit</a> <!--| <a href="#!" class="action" v-on:click="deleteVacancy(p._id)">Delete</a></td>-->
+						    </tr>
+						  </tbody>
+						</table>
+					</div>
+					<div v-else>
+						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#newPageModal" style="float:right;" v-on:click="showAddModal">
+						  Добавить страницу
+						</button>
+						<p>Нет страниц</p>
+					</div>
+
+		
+				</div><!-- Vacancies ends -->
+
+			</div>
+
+		</div>
+
+		<!-- Modals -->
+		<div class="modal fade" id="newPageModal" tabindex="-1" role="dialog" aria-labelledby="newPageModal" aria-hidden="true">
+		  <div class="modal-dialog modal-lg" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 v-if="editPage==0" class="modal-title" id="exampleModalLabel">Добавить страницу</h5>
+		        <h5 v-else class="modal-title" id="exampleModalLabel">Редактировать страницу</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="clearModal">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		      	 <div class="form-group">
+			      	 <label for="pageUrlString">URL адрес</label> 
+			         <input type="text" class="form-control" id="pageUrlString"  v-model="newPage.url" placeholder="page-url-example">
+			     </div>
+		      	 <div class="form-group">
+			      	 <label for="pageTitle">Заголовок</label> 
+			         <input type="text" class="form-control" id="pageTitle"  v-model="newPage.title" placeholder="Белый медведь">
+			     </div>
+			     <div class="form-group">
+			      	 <label for="pageSubtitle">Подзаголовок</label> 
+			         <input type="text" class="form-control" id="pageSubtitle"  v-model="newPage.subtitle" placeholder="Белый медведь">
+			     </div>
+			     <div class="form-group">
+			      	 <label for="pageDetachment">Отряд</label> 
+			         <input type="text" class="form-control" id="pageDetachment"  v-model="newPage.detachment" placeholder="Хищные">
+			     </div>
+			     <div class="form-group">
+			      	 <label for="pageFamily">Семейство</label> 
+			         <input type="text" class="form-control" id="pageFamily"  v-model="newPage.family" placeholder="Медвежьи">
+			     </div>
+				  <div class="form-group">
+				  	<label for="pageDescription">Описание</label>
+				    <textarea class="form-control" id="pageDescription" rows="3" v-model="newPage.description"></textarea>
+				  </div>
+				  <div class="form-group">
+				    <label for="newPageActive">Is Active</label>
+				    <select class="form-control" id="newPageActive" v-model="newPage.active">
+				      <option v-for="option in langOptions" v-bind:value="option">{{ option }}</option>
+				    </select>
+				  </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="clearModal">Close</button>
+		        <button v-if="editPage==0" type="button" class="btn btn-primary add-vacancy" v-on:click="addPage">Submit</button>
+		        <!-- editPage hidden by default -->
+		        <button v-if="editPage>0" type="button" class="btn btn-primary" v-on:click="updatePage">Submit</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+
+
+	</main>
+
+	
+
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+	<!-- Trumbowyg - used to add WYSIWYG -->
+	<script src="/files/trumbowyg.min.js"></script>
+
+	<script type="text/javascript">
+
+		$(function(){
+			// change icon path from default (documentation: https://alex-d.github.io/Trumbowyg/documentation/)
+			$.trumbowyg.svgPath = '/files/icons.svg';
+
+			$('.nav-tabs .nav-item a').click(function (e) {
+				e.preventDefault()
+				$(this).tab('show')
+			});
+
+			$('#pageDescription').trumbowyg({
+				btns: [
+					['viewHTML'],
+			        ['undo', 'redo'], // Only supported in Blink browsers
+			        ['formatting'],
+			        ['strong', 'em', 'del'],
+			        ['link'],
+			        ['insertImage'],
+			        ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+			        ['unorderedList', 'orderedList'],
+			        ['horizontalRule'],
+			        ['removeformat'],
+			        ['fullscreen']
+		        ]
+		    })
+			.on('tbwblur', function(){ 
+				//on blur
+				vue.newVacancy.description = $('#pageDescription').trumbowyg('html');
+			}); 
+
+		});
+
+		
+
+
+	    let vue = new Vue({
+	      el: '#app',
+	      data: {
+	          pages:[],
+	          storedPages: [],
+	          newPage: {}, // used for editing too
+	          langOptions: ["rus","eng"],
+	          editPage: 0
+	      },
+	      methods: {
+	      	updateManagementLists: ()=>{
+
+	      		$.get('/pages').done(function(data) {
+
+	      			if(data.length > 0){
+	      				
+	      				vue.pages = data;
+	      			}
+
+	      		})
+	      		.fail(function(err) {
+	      			alert(JSON.stringify(err));
+	      		});
+
+
+	      	},
+	      	/* To add page*/
+	      	addPage: () =>{
+	      		$.post('/pages',{ ...vue.newPage }).done(function(response) {
+
+	      			$("#newPageModal").modal("hide");
+
+	      			alert(response);
+
+	      			if(JSON.parse(response).status !== "error"){
+	      				console.log(response.status);
+		      			vue.clearModal();  
+
+		      			vue.updateManagementLists();
+	      			}
+
+	      		}).fail(function(){
+	      			alert("Failed to send your data. Please, try again.")
+	      		});
+
+	      		
+	      	},
+	      	/* To update page*/
+	      	updatePage: ()=>{
+	      		const page = { 
+	      			...vue.newPage
+	      		};
+
+	      		$.ajax({
+	      			url: '/pages',
+	      			type: 'PUT',
+	      			data: page,
+	      		}).done(function(response) {
+	      			alert(response);
+
+	      			vue.clearModal();
+	      		})
+	      		.fail(function() {
+	      			alert("Failed to update page " + id + ". Please, try again.");
+	      		});
+
+	      		vue.updateManagementLists();
+	      		
+	      	},
+	      	/* Two methods to show correct button in the modal form */
+	      	showEditModal: (page) =>{
+	      		vue.editPage = 1;
+	      		vue.newPage = JSON.parse(JSON.stringify(page));
+
+	      		$('#pageDescription').trumbowyg('html', vue.newPage.description);
+
+	      		$("#newPageModal").modal("show");
+	      	},
+	      	showAddModal: () =>{
+
+	      		// TODO: make clearModal somewhere in one place
+	      		vue.clearModal();
+
+	      		// empty the content of editor
+	      		$('#pageDescription').trumbowyg('empty');
+
+	      		vue.editPage = 0;
+	      	},
+	      	/* To delete page from the database */
+	      	deleteVacancy: (id) => {
+
+	      		$.ajax({
+	      			url: '/pages/'+id,
+	      			type: 'DELETE',
+	      		}).done(function(response) {
+	      			alert(response);
+	      			vue.updateManagementLists();
+	      		})
+	      		.fail(function() {
+	      			alert("Failed to remove page " + id + ". Please, try again.");
+	      		});
+
+
+	      	},
+	      	/* To clear modal form when on closing */
+	      	clearModal: ()=>{
+
+	      		$('#vacancyModal').modal('hide');
+
+	      		vue.newPage= {};
+
+	      	},
+	      },
+	      /* Initial loading */
+	      created: ()=>{	
+
+	      		$.get('/pages').done(function(data) {
+	      			if(data.length > 0){
+	      				
+	      				vue.pages = data;
+
+	      			}
+
+	      		})
+	      		.fail(function(err) {
+	      			alert(JSON.stringify(err));
+	      		}); 
+
+	      }
+
+	    });
+
+	</script>
+</body>
+</html>

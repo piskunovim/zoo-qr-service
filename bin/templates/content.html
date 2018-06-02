@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Zoo МТС</title>
+	 <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+	
+</head>
+<body>
+
+<main id="app">
+	<div class="container">
+		<div class="row">
+			<h1>{{ content.title }}</h1>
+		</div>
+		<div class="row">
+			<em>{{ content.subtitle }}</em>
+		</div>
+		<div class="row">Отряд: {{ content.detachment }}</div>
+		<div class="row">Семейство: {{ content.family }}</div>
+		<div class="row" v-html="content.description"></div>
+	</div>
+</main>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script>
+		console.log(location.pathname.substr(1));
+
+		 let vue = new Vue({
+	      el: '#app',
+	      data: {
+	          content:{},
+	      },
+	      methods: {
+	      	init: ()=>{
+
+	      		$.get('/pages/'+location.pathname.substr(1)).done(function(data) {
+
+	      			
+	      			if(data){
+	      				//console.log(data);
+	      				vue.content = data;
+	      			}
+
+	      		})
+	      		.fail(function(err) {
+	      			alert(JSON.stringify(err));
+	      		});
+
+
+	      	}
+	      }
+	  });
+
+	  vue.init();
+	</script>
+</body>
+</html>

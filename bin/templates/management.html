@@ -54,6 +54,7 @@
 						      <th scope="col">Заголовок</th>
 						      <th scope="col">URL</th>
 						      <th scope="col">Язык</th>
+						      <th scope="col">Code</th>
 						    </tr>
 						  </thead>
 						  <tbody>
@@ -61,6 +62,7 @@
 						      <td>{{ p.title }}</td>
 						      <td>{{ p.url}}</td>
 						      <td>{{ p.language }}</td>
+						      <td><a href="#!" class="action" v-on:click="showQrCodeModal(p)">QRCode</a></td>
 						      <td><a href="#!" class="action" v-on:click="showEditModal(p)">Edit</a> | <a href="#!" class="action" v-on:click="deletePage(p._id)">Delete</a></td>
 						    </tr>
 						  </tbody>
@@ -126,15 +128,36 @@
 				  </div>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="clearModal">Close</button>
-		        <button v-if="editPage==0" type="button" class="btn btn-primary add-vacancy" v-on:click="addPage">Submit</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="clearModal">Закрыть</button>
+		        <button v-if="editPage==0" type="button" class="btn btn-primary add-vacancy" v-on:click="addPage">Создать</button>
 		        <!-- editPage hidden by default -->
-		        <button v-if="editPage>0" type="button" class="btn btn-primary" v-on:click="updatePage">Submit</button>
+		        <button v-if="editPage>0" type="button" class="btn btn-primary" v-on:click="updatePage">Обновить</button>
 		      </div>
 		    </div>
 		  </div>
 		</div>
 
+
+
+		<!-- QRCode modal -->
+		<div class="modal fade" id="qrCodeModal" tabindex="-1" role="dialog" aria-labelledby="qrCodeModal" aria-hidden="true">
+		  <div class="modal-dialog modal-lg" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="qrCodeModalLabel">QRCode - {{ qrCodePage.title }}</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="clearQrCodeModal">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		      	 <div id="qrcode"></div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="clearQrCodeModal">Закрыть</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 
 
 	</main>
@@ -149,6 +172,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
 	<!-- Trumbowyg - used to add WYSIWYG -->
 	<script src="/files/trumbowyg.min.js"></script>
+	<!-- QRCode generation -->
+	<script src="/files/jquery.qrcode.min.js"></script>
 
 	<script type="text/javascript">
 
@@ -191,6 +216,7 @@
 	      data: {
 	          pages:[],
 	          storedPages: [],
+	          qrCodePage: "",
 	          pageFilter: "",
 	          newPage: { language: "rus" }, // used for editing too
 	          langOptions: ["rus","eng"],
@@ -290,6 +316,21 @@
 	      		$('#pageDescription').trumbowyg('empty');
 
 	      		vue.editPage = 0;
+	      	},
+
+	      	showQrCodeModal: (page) => {
+	      		vue.qrCodePage = page;
+
+	      		$('#qrcode').qrcode({
+	      			text: `http://zoo-mts.ru/${page.url}`,
+	      			width: 700,
+	      			height: 700
+	      		});
+
+	      		$("#qrCodeModal").modal("show");
+	      	},
+	      	clearQrCodeModal: ()=>{
+
 	      	},
 	      	/* To delete page from the database */
 	      	deletePage: (id) => {

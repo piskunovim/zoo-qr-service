@@ -310,7 +310,7 @@
 	      			vue.pages = pages;
 	      		} else {
 		      		let pageFilterString = vue.pageFilter;
-		 			vue.pages = pages.filter(c => c.title.indexOf(pageFilterString) !== -1);
+		 			vue.pages = pages.filter(c => c.title.toLowerCase().indexOf(pageFilterString.toLowerCase()) !== -1);
 	      		}
 	      	}
 	      },

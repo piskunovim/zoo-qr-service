@@ -216,6 +216,13 @@
 	      	},
 	      	/* To add page*/
 	      	addPage: () =>{
+	      		console.log(vue.newPage.url);
+
+	      		if(!vue.newPage.url || !vue.newPage.url.replace(/ /g,"")){
+	      			alert("Пожалуйста, укажите URL.")
+	      			return;
+	      		}
+
 	      		$.post('/pages',{ ...vue.newPage }).done(function(response) {
 
 	      			$("#newPageModal").modal("hide");
@@ -238,6 +245,12 @@
 	      	},
 	      	/* To update page*/
 	      	updatePage: ()=>{
+
+	      		if(!vue.newPage.url){
+	      			alert("Пожалуйста, укажите URL.")
+	      			return;
+	      		}
+
 	      		const page = { 
 	      			...vue.newPage
 	      		};

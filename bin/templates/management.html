@@ -216,12 +216,13 @@
 
 	      			alert(response);
 
-	      			if(JSON.parse(response).status !== "error"){
-	      				console.log(response.status);
-		      			vue.clearModal();  
+	      			vue.clearModal();  
 
-		      			vue.updateManagementLists();
-	      			}
+		      		vue.updateManagementLists();
+	      			/*if(JSON.parse(response).status !== "error"){
+	      				console.log(response.status);
+		      			
+	      			}*/
 
 	      		}).fail(function(){
 	      			alert("Failed to send your data. Please, try again.")

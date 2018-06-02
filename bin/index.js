@@ -18,10 +18,15 @@ app.use('/files', express.static('files'))
 const pages = require('./routes/pages')
 const management = require('./routes/management')
 
-app.get('/', serviceStatus())
+app.get('/', (req, res) => res.sendFile(path.join(__dirname + '/templates/main.html')))
+
 app.use("/pages",pages)
 
+
 app.use('/management', management)
+
+app.get('/:id', (req, res) => res.sendFile(path.join(__dirname + '/templates/content.html')))
+
 
 app.listen(PORT, HOST)
 

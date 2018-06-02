@@ -174,7 +174,7 @@
 		    })
 			.on('tbwblur', function(){ 
 				//on blur
-				vue.newVacancy.description = $('#pageDescription').trumbowyg('html');
+				vue.newPage.description = $('#pageDescription').trumbowyg('html');
 			}); 
 
 		});
@@ -245,9 +245,10 @@
 	      			vue.clearModal();
 	      		})
 	      		.fail(function() {
-	      			alert("Failed to update page " + id + ". Please, try again.");
+	      			alert("Failed to update page. Please, try again.");
 	      		});
 
+	      		$("#newPageModal").modal("hide");
 	      		vue.updateManagementLists();
 	      		
 	      	},
@@ -281,7 +282,7 @@
 	      			vue.updateManagementLists();
 	      		})
 	      		.fail(function() {
-	      			alert("Failed to remove page " + id + ". Please, try again.");
+	      			alert("Failed to remove page. Please, try again.");
 	      		});
 
 

@@ -13,7 +13,7 @@
 <body>
 
 <main id="app">
-	<div class="container">
+	<div class="container" v-if="content.language == 'rus'">
 		<div class="row">
 			<h1>{{ content.title }}</h1>
 		</div>
@@ -22,6 +22,17 @@
 		</div>
 		<div class="row">Отряд: {{ content.detachment }}</div>
 		<div class="row">Семейство: {{ content.family }}</div>
+		<div class="row" v-html="content.description"></div>
+	</div>
+	<div class="container" v-if="content.language == 'eng'">
+		<div class="row">
+			<h1>{{ content.title }}</h1>
+		</div>
+		<div class="row">
+			<em>{{ content.subtitle }}</em>
+		</div>
+		<div class="row">Order: {{ content.detachment }}</div>
+		<div class="row">Family: {{ content.family }}</div>
 		<div class="row" v-html="content.description"></div>
 	</div>
 </main>

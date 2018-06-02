@@ -43,6 +43,8 @@
 				<div class="tab-pane active" id="pages" role="tabpanel">
 						
 					<div v-if="pages.length > 0">
+						<label>Поиск по заголовку:</label>
+						<input type="text" v-model="pageFilter" v-on:change="filterPages">
 						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#newPageModal" style="float:right;" v-on:click="showAddModal">
 						  Добавить страницу
 						</button>
@@ -65,6 +67,8 @@
 						</table>
 					</div>
 					<div v-else>
+						<label>Поиск по заголовку:</label>
+						<input type="text" v-model="pageFilter" v-on:change="filterPages">
 						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#newPageModal" style="float:right;" v-on:click="showAddModal">
 						  Добавить страницу
 						</button>
@@ -187,6 +191,7 @@
 	      data: {
 	          pages:[],
 	          storedPages: [],
+	          pageFilter: "",
 	          newPage: { language: "rus" }, // used for editing too
 	          langOptions: ["rus","eng"],
 	          editPage: 0
@@ -199,6 +204,7 @@
 	      			if(data.length > 0){
 	      				
 	      				vue.pages = data;
+	      				vue.storedPages = data;
 	      			}
 
 	      		})
@@ -296,6 +302,17 @@
 	      		vue.newPage= { language: "rus" };
 
 	      	},
+
+	      	filterPages: ()=>{
+	      		let pages = vue.storedPages;
+
+	      		if(vue.pageFilter === ""){
+	      			vue.pages = pages;
+	      		} else {
+		      		let pageFilterString = vue.pageFilter;
+		 			vue.pages = pages.filter(c => c.title.indexOf(pageFilterString) !== -1);
+	      		}
+	      	}
 	      },
 	      /* Initial loading */
 	      created: ()=>{	
@@ -304,7 +321,7 @@
 	      			if(data.length > 0){
 	      				
 	      				vue.pages = data;
-
+	      				vue.storedPages = data;
 	      			}
 
 	      		})

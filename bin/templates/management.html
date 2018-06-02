@@ -319,8 +319,11 @@
 	      	},
 
 	      	showQrCodeModal: (page) => {
+	      		vue.clearQrCodeModal(); 
+
 	      		vue.qrCodePage = page;
 
+	      		console.log(page.url)
 	      		$('#qrcode').qrcode({
 	      			text: `http://zoo-mts.ru/${page.url}`,
 	      			width: 700,
@@ -330,7 +333,7 @@
 	      		$("#qrCodeModal").modal("show");
 	      	},
 	      	clearQrCodeModal: ()=>{
-
+	      		$('#qrcode').empty();
 	      	},
 	      	/* To delete page from the database */
 	      	deletePage: (id) => {

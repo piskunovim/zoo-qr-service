@@ -34,10 +34,18 @@ router.post('/', (req,res) => {
 router.put('/', (req,res) =>{
 	//console.log(req.body._id)
 
-	Animal.update({'_id': req.body._id }, req.body, function(err, doc){
+	Animal.update({'_id': req.body._id }, req.body, (err, doc)=>{
 	    if (err) return res.send(500, { error: err });
 	    return res.send("Страница успешно обновлена");
 	});
+})
+
+router.delete('/:id', (req,res) => {
+	Animal.remove({'_id': req.params.id }, (err,doc)=>{
+		if(err) return res.send(500, { error: err})
+
+		return res.send(`Страница успешно удалена`)
+	})
 })
 
 module.exports = router

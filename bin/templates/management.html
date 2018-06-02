@@ -59,7 +59,7 @@
 						      <td>{{ p.title }}</td>
 						      <td>{{ p.url}}</td>
 						      <td>{{ p.language }}</td>
-						      <td><a href="#!" class="action" v-on:click="showEditModal(p)">Edit</a> <!--| <a href="#!" class="action" v-on:click="deleteVacancy(p._id)">Delete</a></td>-->
+						      <td><a href="#!" class="action" v-on:click="showEditModal(p)">Edit</a> | <a href="#!" class="action" v-on:click="deletePage(p._id)">Delete</a></td>
 						    </tr>
 						  </tbody>
 						</table>
@@ -273,7 +273,7 @@
 	      		vue.editPage = 0;
 	      	},
 	      	/* To delete page from the database */
-	      	deleteVacancy: (id) => {
+	      	deletePage: (id) => {
 
 	      		$.ajax({
 	      			url: '/pages/'+id,

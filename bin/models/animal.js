@@ -5,6 +5,7 @@ var animalSchema = new Schema({
   url: { type: String, required: true },
   title: { type: String, required: true },
   subtitle: String,
+  image: String,
   detachment: String,
   family: String,
   description: String,

@@ -45,8 +45,8 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-				<p>Отряд: {{ content.detachment }}</p>
-			    <p>Семейство: {{ content.family }}</p>
+				<p v-if="content.detachment">Отряд: {{ content.detachment }}</p>
+			    <p v-if="content.family">Семейство: {{ content.family }}</p>
 				<p v-html="content.description"></p>
 			</div>
 		</div>
@@ -63,8 +63,8 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-				<p>Order: {{ content.detachmentEng }}</p>
-			    <p>Family: {{ content.familyEng }}</p>
+				<p v-if="content.detachmentEng">Order: {{ content.detachmentEng }}</p>
+			    <p v-if="content.familyEng">Family: {{ content.familyEng }}</p>
 				<p v-html="content.descriptionEng"></p>
 			</div>
 		</div>

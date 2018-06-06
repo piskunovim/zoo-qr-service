@@ -58,15 +58,15 @@
 						    <tr>
 						      <th scope="col">Заголовок</th>
 						      <th scope="col">URL</th>
-						      <th scope="col">Code</th>
+						      <th scope="col">Код</th>
 						    </tr>
 						  </thead>
 						  <tbody>
 						    <tr v-for="p in pages">
 						      <td>{{ p.title }}</td>
-						      <td>{{ p.url}}</td>
+						      <td><a v-bind:href="'/'+ p.url">{{ p.url}}</a></td>
 						      <td><a href="#!" class="action" v-on:click="showQrCodeModal(p)">QRCode</a></td>
-						      <td><a href="#!" class="action" v-on:click="showEditModal(p)">Edit</a> | <a href="#!" class="action" v-on:click="deletePage(p._id)">Delete</a></td>
+						      <td><a href="#!" class="action" v-on:click="showEditModal(p)">Редактировать</a> | <a href="#!" class="action" v-on:click="deletePage(p._id)">Удалить</a></td>
 						    </tr>
 						  </tbody>
 						</table>

@@ -17,6 +17,11 @@
 		#editPage{
 			display: none;
 		}
+		.upload-gif{
+			display: none; 
+			margin:15px; 
+			width:50px;
+		}
 	</style>
 	<title>Management Tool</title>
 </head>
@@ -109,6 +114,12 @@
 			         <input type="text" class="form-control" id="pageSubtitle"  v-model="newPage.subtitle" placeholder="Ursus maritimus">
 			     </div>
 			     <div class="form-group">
+			     	<label for="imageInputBlock">Картинка</label>
+			     	<input type="file" id="imageInputBlock" name="imageInputBlock" v-on:change="uploadImage">
+			     	<input type="hidden" class="form-control" id="pageImage" v-model="newPage.image" placeholder="Image URL"><br>
+			     	<img class="upload-gif" src="" alt="Uploading Gif">
+			     </div>
+			     <div class="form-group">
 			      	 <label for="pageDetachment">Отряд</label> 
 			         <input type="text" class="form-control" id="pageDetachment"  v-model="newPage.detachment" placeholder="Хищные">
 			     </div>
@@ -176,6 +187,8 @@
 	<script src="/files/jquery.qrcode.min.js"></script>
 
 	<script type="text/javascript">
+
+		const SERVER_ADDRESS = "http://zoo-mts.ru";
 
 		$(function(){
 			// change icon path from default (documentation: https://alex-d.github.io/Trumbowyg/documentation/)
@@ -300,10 +313,17 @@
 	      	},
 	      	/* Two methods to show correct button in the modal form */
 	      	showEditModal: (page) =>{
+	      		vue.clearModal();
+
 	      		vue.editPage = 1;
 	      		vue.newPage = JSON.parse(JSON.stringify(page));
 
 	      		$('#pageDescription').trumbowyg('html', vue.newPage.description);
+
+	      		if(vue.newPage.image){
+	      			$('.upload-gif').attr('src',SERVER_ADDRESS+'/image/'+vue.newPage.image);
+	      			$('.upload-gif').show();
+	      		}
 
 	      		$("#newPageModal").modal("show");
 	      	},
@@ -325,7 +345,7 @@
 
 	      		console.log(page.url)
 	      		$('#qrcode').qrcode({
-	      			text: `http://zoo-mts.ru/${page.url}`,
+	      			text:  SERVER_ADDRESS +'/'+ page.url,
 	      			width: 700,
 	      			height: 700
 	      		});
@@ -355,6 +375,8 @@
 	      	clearModal: ()=>{
 
 	      		$('#vacancyModal').modal('hide');
+	      		$('#imageInputBlock').val('');
+	      		$('.upload-gif').hide();
 
 	      		vue.newPage= { language: "rus" };
 
@@ -369,6 +391,36 @@
 		      		let pageFilterString = vue.pageFilter;
 		 			vue.pages = pages.filter(c => c.title.toLowerCase().indexOf(pageFilterString.toLowerCase()) !== -1);
 	      		}
+	      	},
+	      	uploadImage: ()=>{
+	      		$('.upload-gif').attr('src','/files/uploading.gif');
+	      		$('.upload-gif').show();
+
+	      		let file = $('#imageInputBlock').prop('files')[0];
+
+				let formdata = new FormData();
+				formdata.append("animalImage", file);
+
+				$.ajax({
+			        url: SERVER_ADDRESS+'/image/upload',
+			        type: 'POST',
+			        data: formdata,
+			        cache: false,
+			        contentType: false,
+			        processData: false,
+			    }).done(function(data) {
+					if(data.indexOf("\"error\"") > 0 ){
+						alert(data);
+						return;
+					}
+					
+					vue.newPage.image = data;
+
+					$('.upload-gif').attr('src',SERVER_ADDRESS+'/image/'+data);
+				})
+				.fail(function() {
+					alert( "Ошибка: Не могу загрузить файл! :(" );
+				});
 	      	}
 	      },
 	      /* Initial loading */

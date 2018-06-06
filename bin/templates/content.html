@@ -31,6 +31,9 @@
 	</div>
 	<div class="container" v-if="content.language == 'rus'">
 		<div class="row">
+			<div class="col-md-6" v-if="content.image">
+				<img class="img-fluid" v-bind:src="'http://zoo-mts.ru/image/'+content.image">
+			</div>
 			<div class="col-md-12">
 				<h1>{{ content.title }}</h1>
 			</div>

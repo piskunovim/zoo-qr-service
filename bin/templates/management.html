@@ -48,7 +48,7 @@
 				<div class="tab-pane active" id="pages" role="tabpanel">
 						
 					<div v-if="pages.length > 0">
-						<label>Поиск по заголовку:</label>
+						<label>Поиск (Заголовок, URL):</label>
 						<input type="text" v-model="pageFilter" v-on:change="filterPages">
 						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#newPageModal" style="float:right;" v-on:click="showAddModal">
 						  Добавить страницу
@@ -424,7 +424,7 @@
 	      			vue.pages = pages;
 	      		} else {
 		      		let pageFilterString = vue.pageFilter;
-		 			vue.pages = pages.filter(c => c.title.toLowerCase().indexOf(pageFilterString.toLowerCase()) !== -1);
+		 			vue.pages = pages.filter(c => c.title.toLowerCase().indexOf(pageFilterString.toLowerCase()) !== -1 || c.url.toLowerCase().indexOf(pageFilterString.toLowerCase()) !== -1);
 	      		}
 	      	},
 	      	uploadImage: ()=>{

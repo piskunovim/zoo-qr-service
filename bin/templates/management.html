@@ -58,7 +58,6 @@
 						    <tr>
 						      <th scope="col">Заголовок</th>
 						      <th scope="col">URL</th>
-						      <th scope="col">Язык</th>
 						      <th scope="col">Code</th>
 						    </tr>
 						  </thead>
@@ -66,7 +65,6 @@
 						    <tr v-for="p in pages">
 						      <td>{{ p.title }}</td>
 						      <td>{{ p.url}}</td>
-						      <td>{{ p.language }}</td>
 						      <td><a href="#!" class="action" v-on:click="showQrCodeModal(p)">QRCode</a></td>
 						      <td><a href="#!" class="action" v-on:click="showEditModal(p)">Edit</a> | <a href="#!" class="action" v-on:click="deletePage(p._id)">Delete</a></td>
 						    </tr>
@@ -131,11 +129,26 @@
 				  	<label for="pageDescription">Описание</label>
 				    <textarea class="form-control" id="pageDescription" rows="3" v-model="newPage.description"></textarea>
 				  </div>
+				  <!-- English part -->
+		      	 <div class="form-group">
+			      	 <label for="pageTitleEng">Title</label> 
+			         <input type="text" class="form-control" id="pageTitleEng"  v-model="newPage.titleEng" placeholder="White Bear">
+			     </div>
+			     <div class="form-group">
+			      	 <label for="pageSubtitleEng">Subtitle</label> 
+			         <input type="text" class="form-control" id="pageSubtitleEng"  v-model="newPage.subtitleEng" placeholder="Ursus maritimus">
+			     </div>
+			     <div class="form-group">
+			      	 <label for="pageDetachmentEng">Order</label> 
+			         <input type="text" class="form-control" id="pageDetachmentEng"  v-model="newPage.detachmentEng" placeholder="Carnivora">
+			     </div>
+			     <div class="form-group">
+			      	 <label for="pageFamilyEng">Family</label> 
+			         <input type="text" class="form-control" id="pageFamilyEng"  v-model="newPage.familyEng" placeholder="Ursidae">
+			     </div>
 				  <div class="form-group">
-				    <label for="newPageActive">Язык</label>
-				    <select class="form-control" id="newPageActive" v-model="newPage.language">
-				      <option v-for="option in langOptions" v-bind:value="option">{{ option }}</option>
-				    </select>
+				  	<label for="pageDescriptionEng">Description</label>
+				    <textarea class="form-control" id="pageDescriptionEng" rows="3" v-model="newPage.descriptionEng"></textarea>
 				  </div>
 		      </div>
 		      <div class="modal-footer">
@@ -219,6 +232,26 @@
 				vue.newPage.description = $('#pageDescription').trumbowyg('html');
 			}); 
 
+			$('#pageDescriptionEng').trumbowyg({
+				btns: [
+					['viewHTML'],
+			        ['undo', 'redo'], // Only supported in Blink browsers
+			        ['formatting'],
+			        ['strong', 'em', 'del'],
+			        ['link'],
+			        ['insertImage'],
+			        ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+			        ['unorderedList', 'orderedList'],
+			        ['horizontalRule'],
+			        ['removeformat'],
+			        ['fullscreen']
+		        ]
+		    })
+			.on('tbwblur', function(){ 
+				//on blur
+				vue.newPage.descriptionEng = $('#pageDescriptionEng').trumbowyg('html');
+			}); 
+
 		});
 
 		
@@ -231,8 +264,7 @@
 	          storedPages: [],
 	          qrCodePage: "",
 	          pageFilter: "",
-	          newPage: { language: "rus" }, // used for editing too
-	          langOptions: ["rus","eng"],
+	          newPage: {}, // used for editing too
 	          editPage: 0
 	      },
 	      methods: {
@@ -319,6 +351,7 @@
 	      		vue.newPage = JSON.parse(JSON.stringify(page));
 
 	      		$('#pageDescription').trumbowyg('html', vue.newPage.description);
+	      		$('#pageDescriptionEng').trumbowyg('html', vue.newPage.descriptionEng);
 
 	      		if(vue.newPage.image){
 	      			$('.upload-gif').attr('src',SERVER_ADDRESS+'/image/'+vue.newPage.image);
@@ -331,9 +364,6 @@
 
 	      		// TODO: make clearModal somewhere in one place
 	      		vue.clearModal();
-
-	      		// empty the content of editor
-	      		$('#pageDescription').trumbowyg('empty');
 
 	      		vue.editPage = 0;
 	      	},
@@ -378,7 +408,12 @@
 	      		$('#imageInputBlock').val('');
 	      		$('.upload-gif').hide();
 
-	      		vue.newPage= { language: "rus" };
+	      		// empty the content of editor
+	      		$('#pageDescription').trumbowyg('empty');
+	      		$('#pageDescriptionEng').trumbowyg('empty');
+
+
+	      		vue.newPage= {};
 
 	      	},
 

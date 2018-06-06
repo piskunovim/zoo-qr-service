@@ -9,6 +9,11 @@ var animalSchema = new Schema({
   detachment: String,
   family: String,
   description: String,
+  titleEng: String,
+  subtitleEng: String,
+  detachmentEng: String,
+  familyEng: String,
+  descriptionEng: String,
   language: String
 });
 

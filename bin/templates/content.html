@@ -12,11 +12,41 @@
 		p{
 			margin:0;
 		}
-		.logo-zoo{
-			width:175px;
+
+		@media (min-width: 576px) {
+			.logo-zoo{
+				width:125px;
+			}
+			.logo-mts{
+				margin: 40px -40px 33px;
+			}
 		}
-		.logo-mts{
-			margin: 33px 0 0;
+
+		@media (min-width: 768px) {
+			.logo-zoo{
+				width:125px;
+			}
+			.logo-mts{
+				margin: 40px -40px 33px;
+			}
+		}
+
+		@media (min-width: 992px) {
+			.logo-zoo{
+				width:155px;
+			}
+			.logo-mts{
+				margin: 48px -50px 33px;
+			}
+		}
+
+		@media (min-width: 1200px) {
+			.logo-zoo{
+				width:175px;
+			}
+			.logo-mts{
+				margin: 45px -110px 33px;
+			}
 		}
 	</style>
 </head>
@@ -25,8 +55,8 @@
 <main id="app">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-2"><img class="img-fluid logo-zoo" src="/files/logo_zoo.png" alt="Logo Zoo"></div>
-			<div class="col-md-7"><img class="img-fluid logo-mts" src="/files/logo_mts.jpg" alt="Logo MTS"></div>
+			<div class="col-4"><img class="img-fluid logo-zoo" src="/files/logo_zoo.png" alt="Logo Zoo"></div>
+			<div class="col-8"><img class="img-fluid logo-mts" src="/files/logo_mts.jpg" alt="Logo MTS"></div>
 		</div>
 	</div>
 	<div class="container">
